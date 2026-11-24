@@ -47,6 +47,16 @@ npm run build
 npm run gen:types  # perlu backend aktif di localhost:8000
 ```
 
+## Deploy ke Netlify
+
+1. Di Netlify (akun Anda): **Add new site → Import from Git → GitHub → `amatarpg/Smart-study-hub-foundation-fe`**, pilih branch `main` (setelah PR digabung) atau `vibe/frontend-scaffold-38644d`. Build command `npm run build` dan publish `dist` sudah otomatis dari `netlify.toml`.
+2. **Environment variables** di Netlify (Site settings → Environment variables):
+   - `VITE_API_BASE_URL=https://<domain-backend-Anda>` — contoh `https://api.sekolah.sch.id` (tanpa trailing slash; dipakai juga untuk WebSocket `wss://`)
+   - `VITE_APP_MOCK=0` (sudah default di `netlify.toml`)
+3. Di backend, set `STUDYHUB_ALLOWED_ORIGINS=https://<nama-site>.netlify.app` (eksplisit, tanpa wildcard) agar CORS dan Origin WebSocket diterima.
+4. Deploy. Rute client-side (React Router) dilayani via redirect SPA di `netlify.toml`.
+5. Untuk preview deploy dari PR, set environment variable yang sama pada konteks preview.
+
 ## Catatan keamanan (mengikuti docs backend)
 
 - Access token disimpan **di memori saja**; refresh token juga hanya di memori dan
